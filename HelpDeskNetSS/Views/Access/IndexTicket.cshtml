@@ -1,0 +1,36 @@
+﻿@model IEnumerable<HelpDeskNetSS.Models.ViewModels.AccessViewModel>
+
+@{
+    ViewBag.Title = "IndexTicket";
+}
+
+<h2>Su listado de solicitudes</h2>
+<br />
+
+<div class="container-fluid content-row">
+    <div class="card-deck">
+        @foreach (var item in Model)
+        {
+            var style = (item.Estado == "ACEPTADO") ? "border-success" : "";
+            var style1 = (item.Estado == "DENEGADO") ? "border-danger" : "";
+            <div class="col-sm-3 d-flex" style="margin-top:15px;">
+                <div class="card text-black-50 bg-light text-center @style @style1">
+                    <img class="card-img-top" src="https://image.flaticon.com/icons/svg/2345/2345486.svg" alt="Card image cap" width="100" height="100">
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(m => item.IDAcceso)</h5>
+                        <p class="card-text">@Html.DisplayFor(m => item.Descripción)</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Estatus: @Html.DisplayFor(m => item.Estado)</li>
+                        <li class="list-group-item">Prioridad: @Html.DisplayFor(m => item.Tipo)</li>
+                    </ul>
+                    <div class="card-footer text-muted">
+                        <a href="@Url.Action("Editar",new { id = item.IDAcceso})" class="btn btn-primary">Acceder</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<br />
+

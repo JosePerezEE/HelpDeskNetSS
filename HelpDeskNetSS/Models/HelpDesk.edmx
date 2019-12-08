@@ -1,0 +1,729 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HelpDeskModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Access">
+          <Key>
+            <PropertyRef Name="IDAcceso" />
+          </Key>
+          <Property Name="IDAcceso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDUsuario" Type="nvarchar" MaxLength="128" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="256" />
+          <Property Name="IDComponente" Type="int" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+          <Property Name="Tipo" Type="varchar" MaxLength="50" />
+          <Property Name="Fecha" Type="date" />
+          <Property Name="Estado" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Component">
+          <Key>
+            <PropertyRef Name="IDComponente" />
+          </Key>
+          <Property Name="IDComponente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+          <Property Name="Estado" Type="varchar" MaxLength="50" />
+          <Property Name="Localizacion" Type="varchar" MaxLength="50" />
+          <Property Name="Seguridad" Type="int" Nullable="false" />
+          <Property Name="FechaInstalacion" Type="date" />
+          <Property Name="UltimoCambio" Type="date" />
+          <Property Name="Caducidad" Type="date" />
+        </EntityType>
+        <EntityType Name="Maintenance">
+          <Key>
+            <PropertyRef Name="IDMantenimiento" />
+          </Key>
+          <Property Name="IDMantenimiento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTicket" Type="int" />
+          <Property Name="IDUsuario" Type="nvarchar" MaxLength="128" />
+          <Property Name="IDUsuarioAsignado" Type="nvarchar" MaxLength="128" />
+          <Property Name="IDComponente" Type="int" />
+          <Property Name="Asignacion" Type="varchar" MaxLength="100" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+          <Property Name="HoraEntrada" Type="datetime" />
+          <Property Name="Estado" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Policy">
+          <Key>
+            <PropertyRef Name="IDPolitica" />
+          </Key>
+          <Property Name="IDPolitica" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+          <Property Name="Fecha" Type="date" />
+          <Property Name="FechaCambio" Type="date" />
+        </EntityType>
+        <EntityType Name="Response">
+          <Key>
+            <PropertyRef Name="IDResolucion" />
+          </Key>
+          <Property Name="IDResolucion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTicket" Type="int" />
+          <Property Name="Resolucion" Type="varchar(max)" />
+          <Property Name="Estado" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="RFC">
+          <Key>
+            <PropertyRef Name="IDRFC" />
+          </Key>
+          <Property Name="IDRFC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fecha" Type="date" />
+          <Property Name="IDUsuario" Type="nvarchar" MaxLength="128" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+          <Property Name="Proposito" Type="varchar(max)" />
+          <Property Name="Prioridad" Type="varchar" MaxLength="50" />
+          <Property Name="TiempoEstimado" Type="varchar" MaxLength="50" />
+          <Property Name="Estatus" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="IDProveedor" />
+          </Key>
+          <Property Name="IDProveedor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDComponente" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+          <Property Name="Tipo" Type="varchar" MaxLength="50" />
+          <Property Name="Contacto" Type="varchar" MaxLength="50" />
+          <Property Name="Fecha" Type="date" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="IDTicket" />
+          </Key>
+          <Property Name="IDTicket" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDUsuario" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Fecha" Type="date" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+          <Property Name="IDComponente" Type="int" />
+          <Property Name="Prioridad" Type="varchar" MaxLength="50" />
+          <Property Name="Estado" Type="varchar" MaxLength="50" />
+          <Property Name="IDUsuarioAssignee" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Access_Component">
+          <End Role="Component" Type="Self.Component" Multiplicity="0..1" />
+          <End Role="Access" Type="Self.Access" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="IDComponente" />
+            </Principal>
+            <Dependent Role="Access">
+              <PropertyRef Name="IDComponente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Component_Policy">
+          <End Role="Policy" Type="Self.Policy" Multiplicity="1" />
+          <End Role="Component" Type="Self.Component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Policy">
+              <PropertyRef Name="IDPolitica" />
+            </Principal>
+            <Dependent Role="Component">
+              <PropertyRef Name="Seguridad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Maintenance_Ticket">
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="0..1" />
+          <End Role="Maintenance" Type="Self.Maintenance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ticket">
+              <PropertyRef Name="IDTicket" />
+            </Principal>
+            <Dependent Role="Maintenance">
+              <PropertyRef Name="IDTicket" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Response_Ticket">
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="0..1" />
+          <End Role="Response" Type="Self.Response" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ticket">
+              <PropertyRef Name="IDTicket" />
+            </Principal>
+            <Dependent Role="Response">
+              <PropertyRef Name="IDTicket" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Supplier_Component1">
+          <End Role="Component" Type="Self.Component" Multiplicity="1" />
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="IDComponente" />
+            </Principal>
+            <Dependent Role="Supplier">
+              <PropertyRef Name="IDComponente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ticket_Ticket">
+          <End Role="Component" Type="Self.Component" Multiplicity="0..1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="IDComponente" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="IDComponente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SP_Ticket_Acceso" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDUsuario" Type="nvarchar" Mode="In" />
+          <Parameter Name="IDComponente" Type="int" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar(max)" Mode="In" />
+          <Parameter Name="Tipo" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Ticket_Acceso_Aceptacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="IDUsuario" Type="nvarchar" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Ticket_Componente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar(max)" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="In" />
+          <Parameter Name="Localizacion" Type="varchar" Mode="In" />
+          <Parameter Name="Seguridad" Type="int" Mode="In" />
+          <Parameter Name="FechaInstalacion" Type="date" Mode="In" />
+          <Parameter Name="UltimoCambio" Type="date" Mode="In" />
+          <Parameter Name="Caducidad" Type="date" Mode="In" />
+        </Function>
+        <Function Name="SP_Ticket_Manten_Estado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDManten" Type="int" Mode="In" />
+          <Parameter Name="IDUsuario" Type="nvarchar" Mode="In" />
+          <Parameter Name="IDUsuarioAsignado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Ticket_Mantenimiento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDTicket" Type="int" Mode="In" />
+          <Parameter Name="IDUsuario" Type="nvarchar" Mode="In" />
+          <Parameter Name="IDUsuarioAsig" Type="varchar" Mode="In" />
+          <Parameter Name="IDComponente" Type="int" Mode="In" />
+          <Parameter Name="Asignacion" Type="varchar" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_Ticket_Proveedor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDComponente" Type="int" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar(max)" Mode="In" />
+          <Parameter Name="Tipo" Type="varchar" Mode="In" />
+          <Parameter Name="Contacto" Type="varchar" Mode="In" />
+          <Parameter Name="Fecha" Type="date" Mode="In" />
+        </Function>
+        <Function Name="SP_Ticket_Registro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDUsuario" Type="nvarchar" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar(max)" Mode="In" />
+          <Parameter Name="IDComponente" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_Ticket_Respuesta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDTicket" Type="int" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_Ticket_RevisarProveedor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDTicket" Type="int" Mode="In" />
+          <Parameter Name="IDUsuario" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Ticket_RFC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDUsuario" Type="nvarchar" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar(max)" Mode="In" />
+          <Parameter Name="Proposito" Type="varchar(max)" Mode="In" />
+          <Parameter Name="Prioridad" Type="varchar" Mode="In" />
+          <Parameter Name="TiempoEstimado" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_Ticket_RFC_Aceptacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDRFC" Type="int" Mode="In" />
+          <Parameter Name="IDUsuario" Type="nvarchar" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_Ticket_SEGUIMIENTO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDTicket" Type="int" Mode="In" />
+          <Parameter Name="IDUsuario" Type="nvarchar" Mode="In" />
+          <Parameter Name="Prioridad" Type="varchar" Mode="In" />
+          <Parameter Name="Estado" Type="varchar" Mode="In" />
+          <Parameter Name="UsuarioAsignado" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="HelpDeskModelStoreContainer">
+          <EntitySet Name="Access" EntityType="Self.Access" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Component" EntityType="Self.Component" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Maintenance" EntityType="Self.Maintenance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Policy" EntityType="Self.Policy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Response" EntityType="Self.Response" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RFC" EntityType="Self.RFC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Access_Component" Association="Self.FK_Access_Component">
+            <End Role="Component" EntitySet="Component" />
+            <End Role="Access" EntitySet="Access" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Component_Policy" Association="Self.FK_Component_Policy">
+            <End Role="Policy" EntitySet="Policy" />
+            <End Role="Component" EntitySet="Component" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Maintenance_Ticket" Association="Self.FK_Maintenance_Ticket">
+            <End Role="Ticket" EntitySet="Ticket" />
+            <End Role="Maintenance" EntitySet="Maintenance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Response_Ticket" Association="Self.FK_Response_Ticket">
+            <End Role="Ticket" EntitySet="Ticket" />
+            <End Role="Response" EntitySet="Response" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Supplier_Component1" Association="Self.FK_Supplier_Component1">
+            <End Role="Component" EntitySet="Component" />
+            <End Role="Supplier" EntitySet="Supplier" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ticket_Ticket" Association="Self.FK_Ticket_Ticket">
+            <End Role="Component" EntitySet="Component" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HelpDeskModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="HelpDeskEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="SP_Ticket_Registro">
+            <Parameter Name="IDUsuario" Mode="In" Type="String" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+            <Parameter Name="IDComponente" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Ticket_SEGUIMIENTO">
+            <Parameter Name="IDTicket" Mode="In" Type="Int32" />
+            <Parameter Name="IDUsuario" Mode="In" Type="String" />
+            <Parameter Name="Prioridad" Mode="In" Type="String" />
+            <Parameter Name="Estado" Mode="In" Type="String" />
+            <Parameter Name="UsuarioAsignado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Ticket_Proveedor">
+            <Parameter Name="IDComponente" Mode="In" Type="Int32" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+            <Parameter Name="Tipo" Mode="In" Type="String" />
+            <Parameter Name="Contacto" Mode="In" Type="String" />
+            <Parameter Name="Fecha" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Ticket_RevisarProveedor">
+            <Parameter Name="IDTicket" Mode="In" Type="Int32" />
+            <Parameter Name="IDUsuario" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Tickets" EntityType="HelpDeskModel.Ticket" />
+          <FunctionImport Name="SP_Ticket_Componente">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+            <Parameter Name="Estado" Mode="In" Type="String" />
+            <Parameter Name="Localizacion" Mode="In" Type="String" />
+            <Parameter Name="Seguridad" Mode="In" Type="Int32" />
+            <Parameter Name="FechaInstalacion" Mode="In" Type="DateTime" />
+            <Parameter Name="UltimoCambio" Mode="In" Type="DateTime" />
+            <Parameter Name="Caducidad" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="Components" EntityType="HelpDeskModel.Component" />
+          <AssociationSet Name="FK_Ticket_Ticket" Association="HelpDeskModel.FK_Ticket_Ticket">
+            <End Role="Component" EntitySet="Components" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+          <EntitySet Name="Suppliers" EntityType="HelpDeskModel.Supplier" />
+          <AssociationSet Name="FK_Supplier_Component1" Association="HelpDeskModel.FK_Supplier_Component1">
+            <End Role="Component" EntitySet="Components" />
+            <End Role="Supplier" EntitySet="Suppliers" />
+          </AssociationSet>
+          <EntitySet Name="RFCs" EntityType="HelpDeskModel.RFC" />
+          <FunctionImport Name="SP_Ticket_Mantenimiento">
+            <Parameter Name="IDTicket" Mode="In" Type="Int32" />
+            <Parameter Name="IDUsuario" Mode="In" Type="String" />
+            <Parameter Name="IDUsuarioAsig" Mode="In" Type="String" />
+            <Parameter Name="IDComponente" Mode="In" Type="Int32" />
+            <Parameter Name="Asignacion" Mode="In" Type="String" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Ticket_RFC">
+            <Parameter Name="IDUsuario" Mode="In" Type="String" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+            <Parameter Name="Proposito" Mode="In" Type="String" />
+            <Parameter Name="Prioridad" Mode="In" Type="String" />
+            <Parameter Name="TiempoEstimado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Ticket_RFC_Aceptacion">
+            <Parameter Name="IDRFC" Mode="In" Type="Int32" />
+            <Parameter Name="IDUsuario" Mode="In" Type="String" />
+            <Parameter Name="Estado" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Maintenances" EntityType="HelpDeskModel.Maintenance" />
+          <EntitySet Name="Responses" EntityType="HelpDeskModel.Response" />
+          <AssociationSet Name="FK_Maintenance_Ticket" Association="HelpDeskModel.FK_Maintenance_Ticket">
+            <End Role="Ticket" EntitySet="Tickets" />
+            <End Role="Maintenance" EntitySet="Maintenances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Response_Ticket" Association="HelpDeskModel.FK_Response_Ticket">
+            <End Role="Ticket" EntitySet="Tickets" />
+            <End Role="Response" EntitySet="Responses" />
+          </AssociationSet>
+          <FunctionImport Name="SP_Ticket_Respuesta">
+            <Parameter Name="IDTicket" Mode="In" Type="Int32" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Accesses" EntityType="HelpDeskModel.Access" />
+          <AssociationSet Name="FK_Access_Component" Association="HelpDeskModel.FK_Access_Component">
+            <End Role="Component" EntitySet="Components" />
+            <End Role="Access" EntitySet="Accesses" />
+          </AssociationSet>
+          <FunctionImport Name="SP_Ticket_Acceso">
+            <Parameter Name="IDUsuario" Mode="In" Type="String" />
+            <Parameter Name="IDComponente" Mode="In" Type="Int32" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+            <Parameter Name="Tipo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Ticket_Acceso_Aceptacion">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="IDUsuario" Mode="In" Type="String" />
+            <Parameter Name="Estado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_Ticket_Manten_Estado">
+            <Parameter Name="IDManten" Mode="In" Type="Int32" />
+            <Parameter Name="IDUsuario" Mode="In" Type="String" />
+            <Parameter Name="IDUsuarioAsignado" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Policies" EntityType="HelpDeskModel.Policy" />
+          <AssociationSet Name="FK_Component_Policy" Association="HelpDeskModel.FK_Component_Policy">
+            <End Role="Policy" EntitySet="Policies" />
+            <End Role="Component" EntitySet="Components" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="IDTicket" />
+          </Key>
+          <Property Name="IDTicket" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDUsuario" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Fecha" Type="DateTime" Precision="0" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IDComponente" Type="Int32" />
+          <Property Name="Prioridad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDUsuarioAssignee" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Component" Relationship="HelpDeskModel.FK_Ticket_Ticket" FromRole="Ticket" ToRole="Component" />
+          <NavigationProperty Name="Maintenances" Relationship="HelpDeskModel.FK_Maintenance_Ticket" FromRole="Ticket" ToRole="Maintenance" />
+          <NavigationProperty Name="Responses" Relationship="HelpDeskModel.FK_Response_Ticket" FromRole="Ticket" ToRole="Response" />
+        </EntityType>
+        <EntityType Name="Component">
+          <Key>
+            <PropertyRef Name="IDComponente" />
+          </Key>
+          <Property Name="IDComponente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Localizacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Seguridad" Type="Int32" Nullable="false" />
+          <Property Name="FechaInstalacion" Type="DateTime" Precision="0" />
+          <Property Name="UltimoCambio" Type="DateTime" Precision="0" />
+          <Property Name="Caducidad" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Tickets" Relationship="HelpDeskModel.FK_Ticket_Ticket" FromRole="Component" ToRole="Ticket" />
+          <NavigationProperty Name="Suppliers" Relationship="HelpDeskModel.FK_Supplier_Component1" FromRole="Component" ToRole="Supplier" />
+          <NavigationProperty Name="Accesses" Relationship="HelpDeskModel.FK_Access_Component" FromRole="Component" ToRole="Access" />
+          <NavigationProperty Name="Policy" Relationship="HelpDeskModel.FK_Component_Policy" FromRole="Component" ToRole="Policy" />
+        </EntityType>
+        <Association Name="FK_Ticket_Ticket">
+          <End Type="HelpDeskModel.Component" Role="Component" Multiplicity="0..1" />
+          <End Type="HelpDeskModel.Ticket" Role="Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="IDComponente" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="IDComponente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="IDProveedor" />
+          </Key>
+          <Property Name="IDProveedor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDComponente" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Contacto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Component" Relationship="HelpDeskModel.FK_Supplier_Component1" FromRole="Supplier" ToRole="Component" />
+        </EntityType>
+        <Association Name="FK_Supplier_Component1">
+          <End Type="HelpDeskModel.Component" Role="Component" Multiplicity="1" />
+          <End Type="HelpDeskModel.Supplier" Role="Supplier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="IDComponente" />
+            </Principal>
+            <Dependent Role="Supplier">
+              <PropertyRef Name="IDComponente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RFC">
+          <Key>
+            <PropertyRef Name="IDRFC" />
+          </Key>
+          <Property Name="IDRFC" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="DateTime" Precision="0" />
+          <Property Name="IDUsuario" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Proposito" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Prioridad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TiempoEstimado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Estatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Maintenance">
+          <Key>
+            <PropertyRef Name="IDMantenimiento" />
+          </Key>
+          <Property Name="IDMantenimiento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTicket" Type="Int32" />
+          <Property Name="IDUsuario" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IDUsuarioAsignado" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IDComponente" Type="Int32" />
+          <Property Name="Asignacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="HoraEntrada" Type="DateTime" Precision="3" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ticket" Relationship="HelpDeskModel.FK_Maintenance_Ticket" FromRole="Maintenance" ToRole="Ticket" />
+        </EntityType>
+        <EntityType Name="Response">
+          <Key>
+            <PropertyRef Name="IDResolucion" />
+          </Key>
+          <Property Name="IDResolucion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTicket" Type="Int32" />
+          <Property Name="Resolucion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ticket" Relationship="HelpDeskModel.FK_Response_Ticket" FromRole="Response" ToRole="Ticket" />
+        </EntityType>
+        <Association Name="FK_Maintenance_Ticket">
+          <End Type="HelpDeskModel.Ticket" Role="Ticket" Multiplicity="0..1" />
+          <End Type="HelpDeskModel.Maintenance" Role="Maintenance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ticket">
+              <PropertyRef Name="IDTicket" />
+            </Principal>
+            <Dependent Role="Maintenance">
+              <PropertyRef Name="IDTicket" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Response_Ticket">
+          <End Type="HelpDeskModel.Ticket" Role="Ticket" Multiplicity="0..1" />
+          <End Type="HelpDeskModel.Response" Role="Response" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ticket">
+              <PropertyRef Name="IDTicket" />
+            </Principal>
+            <Dependent Role="Response">
+              <PropertyRef Name="IDTicket" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Access">
+          <Key>
+            <PropertyRef Name="IDAcceso" />
+          </Key>
+          <Property Name="IDAcceso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDUsuario" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Nombre" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="IDComponente" Type="Int32" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha" Type="DateTime" Precision="0" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Component" Relationship="HelpDeskModel.FK_Access_Component" FromRole="Access" ToRole="Component" />
+        </EntityType>
+        <Association Name="FK_Access_Component">
+          <End Type="HelpDeskModel.Component" Role="Component" Multiplicity="0..1" />
+          <End Type="HelpDeskModel.Access" Role="Access" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="IDComponente" />
+            </Principal>
+            <Dependent Role="Access">
+              <PropertyRef Name="IDComponente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Policy">
+          <Key>
+            <PropertyRef Name="IDPolitica" />
+          </Key>
+          <Property Name="IDPolitica" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha" Type="DateTime" Precision="0" />
+          <Property Name="FechaCambio" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Components" Relationship="HelpDeskModel.FK_Component_Policy" FromRole="Policy" ToRole="Component" />
+        </EntityType>
+        <Association Name="FK_Component_Policy">
+          <End Type="HelpDeskModel.Policy" Role="Policy" Multiplicity="1" />
+          <End Type="HelpDeskModel.Component" Role="Component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Policy">
+              <PropertyRef Name="IDPolitica" />
+            </Principal>
+            <Dependent Role="Component">
+              <PropertyRef Name="Seguridad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HelpDeskModelStoreContainer" CdmEntityContainer="HelpDeskEntities">
+          <FunctionImportMapping FunctionImportName="SP_Ticket_Registro" FunctionName="HelpDeskModel.Store.SP_Ticket_Registro" />
+          <FunctionImportMapping FunctionImportName="SP_Ticket_SEGUIMIENTO" FunctionName="HelpDeskModel.Store.SP_Ticket_SEGUIMIENTO" />
+          <FunctionImportMapping FunctionImportName="SP_Ticket_Proveedor" FunctionName="HelpDeskModel.Store.SP_Ticket_Proveedor" />
+          <FunctionImportMapping FunctionImportName="SP_Ticket_RevisarProveedor" FunctionName="HelpDeskModel.Store.SP_Ticket_RevisarProveedor" />
+          <EntitySetMapping Name="Tickets">
+            <EntityTypeMapping TypeName="HelpDeskModel.Ticket">
+              <MappingFragment StoreEntitySet="Ticket">
+                <ScalarProperty Name="IDUsuarioAssignee" ColumnName="IDUsuarioAssignee" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Prioridad" ColumnName="Prioridad" />
+                <ScalarProperty Name="IDComponente" ColumnName="IDComponente" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="IDUsuario" ColumnName="IDUsuario" />
+                <ScalarProperty Name="IDTicket" ColumnName="IDTicket" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_Ticket_Componente" FunctionName="HelpDeskModel.Store.SP_Ticket_Componente" />
+          <EntitySetMapping Name="Components">
+            <EntityTypeMapping TypeName="HelpDeskModel.Component">
+              <MappingFragment StoreEntitySet="Component">
+                <ScalarProperty Name="Caducidad" ColumnName="Caducidad" />
+                <ScalarProperty Name="UltimoCambio" ColumnName="UltimoCambio" />
+                <ScalarProperty Name="FechaInstalacion" ColumnName="FechaInstalacion" />
+                <ScalarProperty Name="Seguridad" ColumnName="Seguridad" />
+                <ScalarProperty Name="Localizacion" ColumnName="Localizacion" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IDComponente" ColumnName="IDComponente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Suppliers">
+            <EntityTypeMapping TypeName="HelpDeskModel.Supplier">
+              <MappingFragment StoreEntitySet="Supplier">
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Contacto" ColumnName="Contacto" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IDComponente" ColumnName="IDComponente" />
+                <ScalarProperty Name="IDProveedor" ColumnName="IDProveedor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RFCs">
+            <EntityTypeMapping TypeName="HelpDeskModel.RFC">
+              <MappingFragment StoreEntitySet="RFC">
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+                <ScalarProperty Name="TiempoEstimado" ColumnName="TiempoEstimado" />
+                <ScalarProperty Name="Prioridad" ColumnName="Prioridad" />
+                <ScalarProperty Name="Proposito" ColumnName="Proposito" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IDUsuario" ColumnName="IDUsuario" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="IDRFC" ColumnName="IDRFC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_Ticket_Mantenimiento" FunctionName="HelpDeskModel.Store.SP_Ticket_Mantenimiento" />
+          <FunctionImportMapping FunctionImportName="SP_Ticket_RFC" FunctionName="HelpDeskModel.Store.SP_Ticket_RFC" />
+          <FunctionImportMapping FunctionImportName="SP_Ticket_RFC_Aceptacion" FunctionName="HelpDeskModel.Store.SP_Ticket_RFC_Aceptacion" />
+          <EntitySetMapping Name="Maintenances">
+            <EntityTypeMapping TypeName="HelpDeskModel.Maintenance">
+              <MappingFragment StoreEntitySet="Maintenance">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="HoraEntrada" ColumnName="HoraEntrada" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Asignacion" ColumnName="Asignacion" />
+                <ScalarProperty Name="IDComponente" ColumnName="IDComponente" />
+                <ScalarProperty Name="IDUsuarioAsignado" ColumnName="IDUsuarioAsignado" />
+                <ScalarProperty Name="IDUsuario" ColumnName="IDUsuario" />
+                <ScalarProperty Name="IDTicket" ColumnName="IDTicket" />
+                <ScalarProperty Name="IDMantenimiento" ColumnName="IDMantenimiento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Responses">
+            <EntityTypeMapping TypeName="HelpDeskModel.Response">
+              <MappingFragment StoreEntitySet="Response">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Resolucion" ColumnName="Resolucion" />
+                <ScalarProperty Name="IDTicket" ColumnName="IDTicket" />
+                <ScalarProperty Name="IDResolucion" ColumnName="IDResolucion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_Ticket_Respuesta" FunctionName="HelpDeskModel.Store.SP_Ticket_Respuesta" />
+          <EntitySetMapping Name="Accesses">
+            <EntityTypeMapping TypeName="HelpDeskModel.Access">
+              <MappingFragment StoreEntitySet="Access">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IDComponente" ColumnName="IDComponente" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IDUsuario" ColumnName="IDUsuario" />
+                <ScalarProperty Name="IDAcceso" ColumnName="IDAcceso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_Ticket_Acceso" FunctionName="HelpDeskModel.Store.SP_Ticket_Acceso" />
+          <FunctionImportMapping FunctionImportName="SP_Ticket_Acceso_Aceptacion" FunctionName="HelpDeskModel.Store.SP_Ticket_Acceso_Aceptacion" />
+          <FunctionImportMapping FunctionImportName="SP_Ticket_Manten_Estado" FunctionName="HelpDeskModel.Store.SP_Ticket_Manten_Estado" />
+          <EntitySetMapping Name="Policies">
+            <EntityTypeMapping TypeName="HelpDeskModel.Policy">
+              <MappingFragment StoreEntitySet="Policy">
+                <ScalarProperty Name="FechaCambio" ColumnName="FechaCambio" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IDPolitica" ColumnName="IDPolitica" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

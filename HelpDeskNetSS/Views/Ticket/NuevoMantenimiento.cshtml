@@ -1,0 +1,53 @@
+﻿@model HelpDeskNetSS.Models.ViewModels.MaintenanceViewModel
+
+@{
+    ViewBag.Title = "NuevoMantenimiento";
+    List<SelectListItem> Lista = (List<SelectListItem>)ViewBag.lista;
+}
+
+<h2>Registrar Mantenimiento a ticket seleccionado</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(d => d.IDTicket)
+        @Html.HiddenFor(d => d.IDUsuario)
+        @Html.HiddenFor(d => d.Asignacion)
+        @Html.HiddenFor(d => d.IDComponente)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NombreMantenimiento, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NombreMantenimiento, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NombreMantenimiento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DescripcionManten, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DescripcionManten, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DescripcionManten, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Crear" class="btn btn-facebook" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Volver", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

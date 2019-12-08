@@ -1,0 +1,246 @@
+﻿@using Microsoft.AspNet.Identity
+
+<hr class="sidebar-divider my-0">
+
+<!-- Nav Item - Dashboard -->
+<li class="nav-item active">
+    <a class="nav-link" href="#">
+        <span style="color:azure; text-align:center">¡Bienvenido!</span>
+    </a>
+</li>
+
+<!-- Divider -->
+<hr class="sidebar-divider">
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        if (User.IsInRole("SuperAdmin"))
+        {
+            @Html.AntiForgeryToken()
+            <li class="nav-item active">
+                <a class="nav-link" href="#">
+                    <span style="color:azure">@User.Identity.GetUserName()</span>
+                    <img class="img-profile rounded-circle" src="~/Content/images/download.png">
+                </a>
+            </li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/Home/Index">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Seguimiento
+            </div>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Tickets</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Tickets:</h6>
+                        <a class="collapse-item" href="/Ticket/Index">Registro</a>
+                        <a class="collapse-item" href="/Change/Nuevo">Petición de cambio</a>
+                        <a class="collapse-item" href="/Access/Nuevo">Petición de acceso</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Indice</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Elementos:</h6>
+                        <a class="collapse-item" href="/Supplier/Index">Proveedores</a>
+                        <a class="collapse-item" href="/Component/Index">Equipos</a>
+                        <a class="collapse-item" href="/Maintenance/Index">Mantenimientos</a>
+                        <a class="collapse-item" href="/Policy/Index">Politicas de seguridad</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Usuario</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Información:</h6>
+                        <a class="collapse-item" href="/Ticket/IndexTicket">Mis tickets</a>
+                        <a class="collapse-item" href="/Change/IndexTicket">Mis solicitudes</a>
+                        <a class="collapse-item" href="/Access/IndexTicket">Mis peticiónes</a>
+                    </div>
+                </div>
+            </li>
+        }
+        if (User.IsInRole("Administrador"))
+        {
+            @Html.AntiForgeryToken()
+            <li class="nav-item active">
+                <a class="nav-link" href="#">
+                    <span style="color:azure">@User.Identity.GetUserName()</span>
+                    <img class="img-profile rounded-circle" src="~/Content/images/download.png">
+                </a>
+            </li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/Home/Index">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Seguimiento
+            </div>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Tickets</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Tickets:</h6>
+                        <a class="collapse-item" href="/Ticket/Index">Registro</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Indice</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Elementos:</h6>
+                        <a class="collapse-item" href="/Supplier/Index">Proveedores</a>
+                        <a class="collapse-item" href="/Component/Index">Equipos</a>
+                        <a class="collapse-item" href="/Maintenance/Index">Mantenimientos</a>
+                        <a class="collapse-item" href="/Policy/Index">Politicas de seguridad</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Usuario</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Registro:</h6>
+                        <a class="collapse-item" href="/Change/Index">Peticiones de cambio</a>
+                        <a class="collapse-item" href="/Access/Index">Peticiones de acceso</a>
+                        <div class="collapse-divider"></div>
+                        <a class="collapse-item" href="/Account/Register">Registro</a>
+                    </div>
+                </div>
+            </li>
+        }
+        if (User.IsInRole("Usuario"))
+        {
+            @Html.AntiForgeryToken()
+            <li class="nav-item active">
+                <a class="nav-link" href="#">
+                    <span style="color:azure">@User.Identity.GetUserName()</span>
+                    <img class="img-profile rounded-circle" src="~/Content/images/download.png">
+                </a>
+            </li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/Home">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-futbol"></i>
+                    <span>Tickets</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Tickets:</h6>
+                        <a class="collapse-item" href="/Ticket/Nuevo">Registro</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Accesos</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Registro:</h6>
+                        <a class="collapse-item" href="/Access/Nuevo">Petición de acceso</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-pen"></i>
+                    <span>Usuario</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Información:</h6>
+                        <a class="collapse-item" href="/Ticket/IndexTicket">Mis tickets</a>
+                        <a class="collapse-item" href="/Access/IndexTicket">Mis peticiónes</a>
+
+                    </div>
+                </div>
+            </li>
+
+        }
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Tables -->
+        <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
+                <i class="fas fa-sign-out-alt fa-fw"></i>
+                <span>Salir</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+    }
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+}
+else
+{
+    @Html.AntiForgeryToken()
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+        <!-- Sidebar Toggle (Topbar) -->
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+        </button>
+
+        <!-- Topbar Navbar -->
+        <ul class="navbar-nav ml-auto">
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</span>
+            </li>
+
+        </ul>
+
+    </nav>
+}

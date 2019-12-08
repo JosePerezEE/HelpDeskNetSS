@@ -1,0 +1,87 @@
+﻿@model HelpDeskNetSS.Models.ViewModels.NuevoComponentViewModel
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IDComponente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDComponente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Localizacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Localizacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Seguridad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Seguridad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaInstalacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaInstalacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UltimoCambioFecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UltimoCambioFecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CaducidadFecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CaducidadFecha)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Volver", "Index")
+</p>

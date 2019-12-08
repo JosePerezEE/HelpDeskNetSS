@@ -1,0 +1,40 @@
+﻿@model IEnumerable<HelpDeskNetSS.Models.ViewModels.ListaTicketViewModel>
+
+@{
+    ViewBag.Title = "IndexTicket";
+}
+
+<h2>Su listado de tickets</h2>
+<br />
+
+<div class="container-fluid content-row">
+            <div class="card-deck">
+                @foreach (var item in Model)
+                {
+                    var style = (item.Estado == "PROVEEDORES") ? "border-warning" : "";
+                    var style1 = (item.Estado == "MANTENIMIENTO") ? "border-info" : "";
+                    var style2 = (item.Estado == "RESUELTO") ? "border-success" : "";
+                    var style3 = (item.Estado == "EN SEGUIMIENTO") ? "border-dark" : "";
+                    var style4 = (item.Estado == "SIN SEGUIMIENTO") ? "border-danger" : "";
+                    <div class="col-sm-3 d-flex" style="margin-top:15px;">
+                        <div class="card text-black-50 bg-light text-center @style @style1 @style2 @style3 @style4">
+                            <img class="card-img-top" src="https://image.flaticon.com/icons/svg/175/175613.svg" alt="Card image cap" width="100" height="100">
+                            <div class="card-body">
+                                <h5 class="card-title">@Html.DisplayFor(m => item.IDTicket)</h5>
+                                <p class="card-text">@Html.DisplayFor(m => item.Nombre)</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Estado: @Html.DisplayFor(m => item.Estado)</li>
+                                <li class="list-group-item">Prioridad: @Html.DisplayFor(m => item.Prioridad)</li>
+                                <li class="list-group-item">Asignado a: @Html.DisplayFor(m => item.Asignacion)</li>
+                            </ul>
+                            <div class="card-footer text-muted">
+                                <a href="@Url.Action("Detalles",new { id = item.IDTicket})" class="btn btn-primary">Acceder</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+      </div>
+    <br />
+

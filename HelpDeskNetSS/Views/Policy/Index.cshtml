@@ -1,0 +1,54 @@
+﻿@model IEnumerable<HelpDeskNetSS.Models.ViewModels.PolicyViewModel>
+<div class="title_left">
+    <h3>Politicas de seguridad</h3>
+</div>
+<hr />
+@{
+    ViewBag.Title = "Index";
+}
+
+<table id="table_id" class="table table-striped table-bordered display">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("ID")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            @if (Request.IsAuthenticated)
+            {
+                if (User.IsInRole("Administrador"))
+                {
+                     <th>Opciones</th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDPolitica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+                @if (Request.IsAuthenticated)
+                {
+                    if (User.IsInRole("Administrador"))
+                    {
+                        <td>
+                            <a href="@Url.Action("Editar",new { id = item.IDPolitica})"><i class="fa fa-edit fa-2x"></i>|</a>
+                            <a href="#" onclick="$('#DeleteAction').val('@(item.IDPolitica)')" data-toggle="modal" data-target="#confirm"
+                               data-tooltip="tooltip" data-placement="top" title="Eliminar">
+                                <i class="fa fa-trash fa-2x"></i>
+                            </a>
+                        </td>
+                    }
+                 }
+                </tr>
+        }
+    </tbody>
+</table>

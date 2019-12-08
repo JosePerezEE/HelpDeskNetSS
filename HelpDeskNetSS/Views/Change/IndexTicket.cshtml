@@ -1,0 +1,38 @@
+﻿@model IEnumerable<HelpDeskNetSS.Models.ViewModels.RFCViewModel>
+
+@{
+    ViewBag.Title = "IndexTicket";
+}
+
+<h2>Su listado de solicitudes</h2>
+<br />
+
+<div class="container-fluid content-row">
+        <div class="card-deck">
+            @foreach (var item in Model)
+            {
+                var style = (item.Estatus == "ACEPTADO") ? "border-success" : "";
+                var style1 = (item.Estatus == "RECHAZADO") ? "border-danger" : "";
+                var style2 = (item.Estatus == "IMPLEMENTADO") ? "border-primary" : "";
+                var style3 = (item.Estatus == "EN SEGUIMIENTO") ? "border-dark" : "";
+                <div class="col-sm-3 d-flex" style="margin-top:15px;">
+                    <div class="card text-black-50 bg-light text-center @style @style1 @style2 @style3">
+                        <img class="card-img-top" src="https://image.flaticon.com/icons/svg/175/175613.svg" alt="Card image cap" width="100" height="100">
+                        <div class="card-body">
+                            <h5 class="card-title">@Html.DisplayFor(m => item.RFC)</h5>
+                            <p class="card-text">@Html.DisplayFor(m => item.Descripción)</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Estatus: @Html.DisplayFor(m => item.Estatus)</li>
+                            <li class="list-group-item">Prioridad: @Html.DisplayFor(m => item.Prioridad)</li>
+                        </ul>
+                        <div class="card-footer text-muted">
+                            <a href="@Url.Action("Editar",new { id = item.RFC})" class="btn btn-primary">Acceder</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+</div>
+<br />
+

@@ -1,0 +1,110 @@
+﻿@using Microsoft.AspNet.Identity
+
+@model HelpDeskNetSS.Models.ViewModels.ListaTicketViewModel
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles y seguimiento continuo</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IDTicket)
+        @Html.HiddenFor(model => model.IDUsuario)
+        @Html.HiddenFor(model => model.Fecha)
+        @Html.HiddenFor(model => model.Nombre)
+        @Html.HiddenFor(model => model.Descripción)
+        @Html.HiddenFor(model => model.IDComponente)
+        @if (Request.IsAuthenticated)
+        {
+            if (User.IsInRole("SuperAdmin"))
+            {
+                <div class="form-group" style="float:right">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Proveedor" class="btn btn-google" />
+                    </div>
+                </div>
+            }
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.IDTicket)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDTicket)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripción)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripción)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDComponente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDComponente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Prioridad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Prioridad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Asignacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Asignacion)
+        </dd>
+        @if (Request.IsAuthenticated)
+        {
+            if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrador"))
+            {
+                @Html.ActionLink("Volver", "Index")
+            }
+            else if (User.IsInRole("Usuario"))
+            {
+                @Html.ActionLink("Volver", "IndexTicket")
+            }
+        }
+    </div>
+}

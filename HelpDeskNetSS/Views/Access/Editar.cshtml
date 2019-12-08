@@ -1,0 +1,118 @@
+﻿@model HelpDeskNetSS.Models.ViewModels.AccessViewModel
+
+@{
+    ViewBag.Title = "Editar";
+}
+
+<h2>Aprobar o rechazar la solicitud</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(d => d.IDAcceso)
+        @Html.HiddenFor(d => d.IDUsuario)
+        @if (Request.IsAuthenticated)
+        {
+            if (User.IsInRole("Administrador"))
+            {
+                <div class="form-group" style="float:right">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Notificar" class="btn btn-google" />
+                    </div>
+                </div>
+            }
+        }
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Nombre)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Descripción)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Descripción)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.IDComponente)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.IDComponente)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Tipo)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Tipo)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Fecha)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Fecha)
+                </dd>
+                @if (Request.IsAuthenticated)
+                {
+                    if (User.IsInRole("Usuario"))
+                    {
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Estado)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Estado)
+                        </dd>
+                    }
+                }
+            </dl>
+            <hr />
+            @if (Request.IsAuthenticated)
+            {
+                if (User.IsInRole("Administrador"))
+                {
+            <div class="form-group">
+                @Html.DisplayNameFor(model => model.Estado)
+                <div class="col-md-10">
+                    @Html.DropDownList("Estado", new List<SelectListItem> {
+                   new SelectListItem{ Text="ACEPTADO", Value = "ACEPTADO" },
+                   new SelectListItem{ Text="DENEGADO", Value = "DENEGADO" }}, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+                </div>
+            </div>
+                }
+            }
+        </div>
+    </div>
+}
+
+@if (Request.IsAuthenticated)
+{
+    if (User.IsInRole("Administrador"))
+    {
+        @Html.ActionLink("Volver", "Index")
+    }
+    if (User.IsInRole("SuperAdmin") || User.IsInRole("Usuario"))
+    {
+        @Html.ActionLink("Volver", "Index", "Home")
+    }
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

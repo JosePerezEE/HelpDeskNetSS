@@ -1,0 +1,101 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<HelpDeskNetSS.Models.ViewModels.ListaTicketViewModel>
+<div class="title_left">
+    <h3>Tickets</h3>
+</div>
+<hr />
+@{
+    ViewBag.Title = "Index";
+}
+@if (Request.IsAuthenticated)
+{
+    if (User.IsInRole("SuperAdmin") || User.IsInRole("Usuario"))
+    {
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <a href="@Url.Action("Nuevo")" class="btn btn-primary">Agregar <i class="fa fa-plus-circle"></i></a>
+            <div class="clearfix"></div>
+        </div>
+    }
+}
+<br />
+<table id="table_id" class="table table-striped table-bordered display fit">
+    <thead>
+        <tr>
+            <th>@Html.DisplayName("ID")</th>
+            <th>@Html.DisplayNameFor(m => m.Nombre)</th>
+            <th>@Html.DisplayNameFor(m => m.Estado)</th>
+            <th>@Html.DisplayNameFor(m => m.Prioridad)</th>
+            <th>@Html.DisplayNameFor(m => m.Asignacion)</th>
+            <th style="width:1%">@Html.DisplayName("Mantenimiento")</th>
+            @if (Request.IsAuthenticated)
+            {
+                if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrador"))
+                {
+                    <th>@Html.DisplayName("Seguimiento")</th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@Html.DisplayFor(m => item.IDTicket)</td>
+            <td>@Html.DisplayFor(m => item.Nombre)</td>
+            <td>@Html.DisplayFor(m => item.Estado)</td>
+            <td>@Html.DisplayFor(m => item.Prioridad)</td>
+            <td>@Html.DisplayFor(m => item.Asignacion)</td>
+            <td style="text-align: center">
+                <a href="@Url.Action("Detalles",new { id = item.IDTicket})"><i class="fa fa-info-circle fa-2x"></i>|</a>
+                <a href="#" onclick="$('#DeleteAction').val('@(item.IDTicket)')" data-toggle="modal" data-target="#confirm"
+                   data-tooltip="tooltip" data-placement="top" title="Eliminar">
+                    <i class="fa fa-trash fa-2x"></i>
+                </a>
+            </td>
+            @if (Request.IsAuthenticated)
+            {
+                if (User.IsInRole("SuperAdmin"))
+                {
+            <td style="text-align: center">
+                <a href="@Url.Action("NuevoMantenimiento", new { id = item.IDTicket })"><i class="fa fa-keyboard fa-2x"></i>|</a>
+                <a href="@Url.Action("Resolucion",new { id = item.IDTicket})"><i class="fa fa-inbox fa-2x"></i></a>
+            </td>
+                }
+                else if (User.IsInRole("Administrador"))
+                {
+            <td style="text-align: center">
+                <a href="@Url.Action("Editar",new { id = item.IDTicket})"><i class="fa fa-edit fa-2x"></i></a>
+            </td>
+                }
+            }
+        </tr>
+
+            }
+    </tbody>
+</table>
+
+
+<!--
+Modal
+-->
+<div class="modal fade" id="confirm" tabindex="-1" role="dialog">
+    @using (Html.BeginForm("Eliminar", "Ticket", FormMethod.Get))
+    {
+        <input type="hidden" id="DeleteAction" name="id" />
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="defaultModalLabel">Eliminar</h4>
+                </div>
+                <div class="modal-body">
+                    ¿Desea eliminar permanentemente el ticket?
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Eliminar" class="btn btn-facebook waves-effect" />
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

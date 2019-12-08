@@ -1,31 +1,400 @@
-﻿@{
+﻿@using Microsoft.AspNet.Identity
+@{
+    /**/
+
     ViewBag.Title = "Home Page";
 }
+@if (Request.IsAuthenticated)
+{
+    if (User.IsInRole("SuperAdmin"))
+    {
+        @Html.AntiForgeryToken()
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        </div>
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+        <div class="row">
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Numero de tickets</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.Tickets</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-ticket-alt fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Tickets en seguimiento</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TicketsAssigneeS</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tickets asignados</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TicketsUsuario</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Tickets sin seguimiento</div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@ViewBag.PorcentajeTicket.ToString("0.00")%</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress progress-sm mr-2">
+                                            <div class="progress-bar bg-orange" role="progressbar" style="width: @ViewBag.PorcentajeTicket%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-backspace fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="jumbotron">
+            <h1>Network Service Solutions - ITIL</h1>
+            <p class="lead">Help desk para el seguimiento de incidencias mediante tickets</p>
+        </div>
+    }
+    else if (User.IsInRole("Administrador"))
+    {
+        @Html.AntiForgeryToken()
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Desarrollo de tickets</h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="chart-pie pt-4 pb-2">
+                                <canvas id="tickets"></canvas>
+                            </div>
+                            <div class="mt-4 text-center big">
+                                <span class="mr-1">
+                                    <i class="fas fa-circle" style="color:#e3da32"></i> En seguimiento
+                                </span>
+                                <span class="mr-1">
+                                    <i class="fas fa-circle" style="color:#d44613"></i> Sin seguimiento
+                                </span>
+                                <span class="mr-1">
+                                    <i class="fas fa-circle" style="color:#4e73df"></i> Mantenimiento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </span>
+                                <span class="mr-1">
+                                    <i class="fas fa-circle" style="color:#a7df4e"></i> Proveedores
+                                </span>
+                                <span class="mr-1">
+                                    <i class="fas fa-circle" style="color:#53d62f"></i> Resueltos
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Peticiones de cambio</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.Numcambios</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa fa-user-circle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Solicitudes de acceso</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.Numacceso</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa fa-user-circle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">En seguimiento</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.NumcambiosSeg</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa fa-reply-all fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">En seguimiento</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.NumaccesoSeg</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-reply-all fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Solcitudes aceptadas</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.NumcambiosAcep</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cambios aceptados</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.NumaccesoAcep</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Solcitudes rechazadas</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.NumcambiosRech</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-exclamation-circle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Cambios rechazados</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.NumaccesoRech</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-exclamation-circle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    if (User.IsInRole("Usuario"))
+    {
+        @Html.AntiForgeryToken()
+        <div id="content">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                    <a href="/Ticket/Nuevo" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                        <i class="fas fa-download fa-sm text-white-50"></i>
+                        Crear ticket
+                    </a>
+                </div>
+                <div class="row">
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tickets</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TicketUsuarioM</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-ticket-alt fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-secondary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Tickets en seguimiento</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TicketUsuarioS</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Tickets en espera</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TicketUsuarioNS</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Tickets resueltos</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TicketResuelto</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-check-double fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="jumbotron">
+                    <h1>Network Service Solutions - ITIL</h1>
+                    <p class="lead">Help desk para el seguimiento de incidencias mediante tickets</p>
+                    <p style="color:lightgray"><a id='esconder' class="btn btn-primary btn-lg btnhistorial">Documentación &raquo;</a></p>
+                </div>
+                <div class="panel">
+                    <iframe width="1000" height="800" src="~/Documento/Soluciones.pdf" class="contenido" frameborder="0" allowFullScreen="true" style="border:0;display:none"></iframe>
+                    <br />
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+    }
+    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        $('#esconder').on('click', function (event) {
+            $('.contenido').toggle('show');
+        });
+        });
+
+        var ctx = document.getElementById("tickets");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["En seguimiento", "Sin seguimiento", "Mantenimiento","Proveedores","Resueltos"],
+                datasets: [{
+                    data: [@ViewBag.Seguimiento,@ViewBag.Noseguimiento,@ViewBag.Mantenimiento,@ViewBag.Proveedor,@ViewBag.Resuelto],
+                    backgroundColor: ['#e3da32', '#d44613', '#4e73df', '#a7df4e', '#53d62f'],
+                    hoverBackgroundColor: ['#bfb721', '#b53c10', '#2e59d9', '#86bd2f', '#39b317'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+    </script>
+}

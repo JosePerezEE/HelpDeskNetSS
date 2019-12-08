@@ -1,0 +1,71 @@
+﻿@model HelpDeskNetSS.Models.ViewModels.SupplierViewModel
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles de proveedor</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IDProveedor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDProveedor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDComponente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDComponente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripción)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripción)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contacto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contacto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaContrato)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaContrato)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Volver", "Index")
+</p>

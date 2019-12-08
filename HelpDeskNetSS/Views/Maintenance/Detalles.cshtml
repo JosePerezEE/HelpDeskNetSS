@@ -1,0 +1,95 @@
+﻿@model HelpDeskNetSS.Models.ViewModels.MaintenanceViewModel
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Seguimiento de mantenimiento</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div>
+            @Html.HiddenFor(d => d.IDMantenimiento)
+            @Html.HiddenFor(d => d.IDUsuario)
+            @if (Request.IsAuthenticated)
+            {
+                if (User.IsInRole("Administrador") || User.IsInRole("SuperAdmin"))
+                {
+                    <div class="form-group" style="float:right">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Terminar" class="btn btn-google" />
+                        </div>
+                    </div>
+                }
+            }
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.IDTicket)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.IDTicket)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.IDComponente)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.IDComponente)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Asignacion)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Asignacion)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.NombreMantenimiento)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.NombreMantenimiento)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DescripcionManten)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.DescripcionManten)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Hora)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Hora)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Estado)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Estado)
+                </dd>
+
+            </dl>
+
+</div>
+}
+
+@if (Request.IsAuthenticated)
+{
+    if (User.IsInRole("Administrador") || User.IsInRole("SuperAdmin"))
+    {
+        @Html.ActionLink("Volver", "Index")
+    }
+}
